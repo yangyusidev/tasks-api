@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply min-h-screen text-ink antialiased;
+  }
+}
+
+@layer utilities {
+  .paper-texture {
+    background-color: #f2e8d8;
+    background-image:
+      linear-gradient(rgba(90, 70, 50, 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(90, 70, 50, 0.05) 1px, transparent 1px),
+      radial-gradient(ellipse 120% 80% at 50% -20%, rgba(255, 255, 255, 0.45), transparent 55%),
+      radial-gradient(ellipse 80% 60% at 100% 100%, rgba(200, 170, 130, 0.2), transparent 50%);
+    background-size:
+      100% 32px,
+      32px 100%,
+      100% 100%,
+      100% 100%;
+  }
+
+  .noise-overlay {
+    position: relative;
+  }
+
+  .noise-overlay::after {
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    opacity: 0.12;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+}
