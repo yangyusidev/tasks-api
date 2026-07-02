@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getSupabaseAdmin } from "@/lib/supabase/server";
 import { handleRouteError, jsonError } from "@/lib/api/errors";
+import { describeDeepSeekError } from "@/lib/openai/deepseek";
 import { breakdownTaskBodySchema } from "@/lib/validation/task";
 import { breakTaskTitleIntoSteps } from "@/lib/tasks/breakdown-ai";
 import type { Task } from "@/lib/types/task";
@@ -44,8 +45,7 @@ export async function POST(request: Request) {
       steps = await breakTaskTitleIntoSteps(labelForAi);
     } catch (e) {
       console.error("[POST /api/tasks/breakdown] AI", e);
-      const msg = e instanceof Error ? e.message : String(e);
-      return jsonError(502, "任务拆解失败", msg);
+      return jsonError(502, "任务拆解失败", describeDeepSeekError(e));
     }
 
     const rows = steps.map((title) => ({

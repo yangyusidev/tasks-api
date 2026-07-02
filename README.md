@@ -7,7 +7,7 @@
 - 创建、查看和删除任务
 - 在「待办 → 进行中 → 已完成」之间循环切换状态
 - 展示多层父子任务
-- 使用 DeepSeek 兼容接口自动拆解任务
+- 使用 DeepSeek 官方 API 自动拆解任务
 - 删除父任务时级联删除子任务
 - 在手账装饰和简洁外观之间切换
 - 提供任务 API 集成测试脚本
@@ -19,7 +19,7 @@
 - TypeScript
 - Tailwind CSS
 - Supabase
-- OpenAI Node SDK（调用 OpenAI 兼容的 DeepSeek 网关）
+- OpenAI Node SDK（调用 DeepSeek 官方 OpenAI 兼容 API）
 - Zod
 
 ## 本地运行
@@ -28,17 +28,17 @@
 
 ```bash
 npm install
-cp .env.local.example .env.local
 ```
 
-编辑 `.env.local`：
+在项目根目录创建或编辑 `.env.local`：
 
 ```env
 NEXT_PUBLIC_SUPABASE_URL=https://你的项目.supabase.co
 SUPABASE_SERVICE_ROLE_KEY=你的服务端密钥
 
 DEEPSEEK_API_KEY=你的API密钥
-DEEPSEEK_MODEL=deepseek-v3
+DEEPSEEK_BASE_URL=https://api.deepseek.com
+DEEPSEEK_MODEL=deepseek-v4-flash
 ```
 
 `SUPABASE_SERVICE_ROLE_KEY` 和 `DEEPSEEK_API_KEY` 仅供服务端使用，不要提交到 Git，也不要使用 `NEXT_PUBLIC_` 前缀。
@@ -71,10 +71,12 @@ npm run dev
 | `NEXT_PUBLIC_SUPABASE_URL` | 是 | Supabase 项目根地址，不要附加 `/rest/v1` |
 | `SUPABASE_SERVICE_ROLE_KEY` | 推荐 | 服务端数据库密钥，可绕过 RLS |
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | 二选一 | 未使用 service role 时的备用密钥 |
-| `DEEPSEEK_API_KEY` | 是 | AI 拆解任务使用的 API 密钥 |
-| `DEEPSEEK_MODEL` | 推荐 | 当前网关可使用 `deepseek-v3` |
+| `DEEPSEEK_API_KEY` | 是 | DeepSeek 官方平台 API 密钥 |
+| `DEEPSEEK_BASE_URL` | 推荐 | DeepSeek 官方 API 地址，默认 `https://api.deepseek.com` |
+| `DEEPSEEK_MODEL` | 推荐 | 默认 `deepseek-v4-flash`，可按需改为 `deepseek-v4-pro` |
+| `DEEPSEEK_TIMEOUT_MS` | 否 | AI 请求超时时间，默认 `30000` |
 
-DeepSeek 兼容网关地址配置在 [`lib/openai/deepseek.ts`](lib/openai/deepseek.ts)。
+DeepSeek API 地址和默认模型配置在 [`lib/openai/deepseek.ts`](lib/openai/deepseek.ts)。
 
 ## API
 
